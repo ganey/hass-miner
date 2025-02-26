@@ -18,10 +18,11 @@ from homeassistant.helpers.typing import ConfigType
 from .const import DOMAIN
 from .const import SERVICE_REBOOT
 from .const import SERVICE_RESTART_BACKEND
+from .const import SERVICE_SET_POWER_LIMIT
 
 _LOGGER = logging.getLogger(__name__)
 
-ACTION_TYPES = {"reboot", "restart_backend"}
+ACTION_TYPES = {"reboot", "restart_backend", "set_power_limit"}
 
 ACTION_SCHEMA = cv.DEVICE_ACTION_BASE_SCHEMA.extend(
     {
@@ -76,6 +77,9 @@ async def async_call_action_from_config(
         service = SERVICE_REBOOT
     elif config[CONF_TYPE] == "restart_backend":
         service = SERVICE_RESTART_BACKEND
+    elif config[CONF_TYPE] == "set_power_limit":
+        service = SERVICE_SET_POWER_LIMIT
+        service_data.LIMIT = variables.get('limit', 0)
 
     if service is None:
         _LOGGER.error(f"Failed to call the service {config[CONF_TYPE]} for miner.")

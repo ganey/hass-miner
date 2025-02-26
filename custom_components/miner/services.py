@@ -12,6 +12,7 @@ from homeassistant.helpers.device_registry import async_get as async_get_device_
 from .const import DOMAIN
 from .const import SERVICE_REBOOT
 from .const import SERVICE_RESTART_BACKEND
+from .const import SERVICE_SET_POWER_LIMIT
 
 LOGGER = logging.getLogger(__name__)
 
@@ -51,3 +52,10 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             await asyncio.gather(*[miner.restart_backend() for miner in miners])
 
     hass.services.async_register(DOMAIN, SERVICE_RESTART_BACKEND, restart_backend)
+
+    async def set_power_limit(call: ServiceCall) -> None:
+        miners = await get_miners(call)
+        if len(miners) > 0:
+            await asyncio.gather(*[miner.set_power_limit(call.data['limit']) for miner in miners])
+
+    hass.services.async_register(DOMAIN, SERVICE_SET_POWER_LIMIT, set_power_limit)

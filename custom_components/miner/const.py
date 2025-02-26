@@ -12,6 +12,7 @@ CONF_WEB_USERNAME = "web_username"
 
 SERVICE_REBOOT = "reboot"
 SERVICE_RESTART_BACKEND = "restart_backend"
+SERVICE_SET_POWER_LIMIT = "set_power_limit"
 
 TERA_HASH_PER_SECOND = "TH/s"
 JOULES_PER_TERA_HASH = "J/TH"
